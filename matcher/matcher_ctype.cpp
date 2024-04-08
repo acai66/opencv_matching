@@ -1,6 +1,4 @@
-﻿#pragma once
-
-#ifdef _WIN32
+﻿#ifdef _WIN32
 #pragma warning(disable: 4251)
 #endif  // _WIN32
 
@@ -101,7 +99,7 @@ Matcher::Matcher(const template_matching::MatcherParam& param)
 	}
 
 	// 获取动态库内的函数
-	_myGetMatcher = (InitMD)dlsym(handle, "GetMatcher");
+	_myGetMatcher = (InitMD)dlsym(_handle, "GetMatcher");
 #endif
 
 	if (_myGetMatcher == nullptr)
@@ -191,7 +189,7 @@ int Matcher::match(const cv::Mat& frame, MatchResult* Results, int maxCount)
 }
 
 // 对外提供dll功能接口：初始化匹配器
-extern"C" __declspec(dllexport) Matcher * matcher(int maxCount, float scoreThreshold, float iouThreshold, float angle, float minArea)
+extern"C" LIB_API Matcher * matcher(int maxCount, float scoreThreshold, float iouThreshold, float angle, float minArea)
 {
 	template_matching::MatcherParam param;
 	param.matcherType = template_matching::MatcherType::PATTERN;
@@ -207,7 +205,7 @@ extern"C" __declspec(dllexport) Matcher * matcher(int maxCount, float scoreThres
 }
 
 // 对外提供dll功能接口：设置模板
-extern"C" __declspec(dllexport) int setTemplate(Matcher * obj1, uchar * data, int width, int height, int channels)
+extern"C" LIB_API int setTemplate(Matcher * obj1, uchar * data, int width, int height, int channels)
 {
 	cv::Mat img;
 
@@ -228,7 +226,7 @@ extern"C" __declspec(dllexport) int setTemplate(Matcher * obj1, uchar * data, in
 }
 
 // 对外提供dll功能接口：执行匹配
-extern"C" __declspec(dllexport) int match(Matcher * obj1, uchar * data, int width, int height, int channels, MatchResult * Results, int maxCount)
+extern"C" LIB_API int match(Matcher * obj1, uchar * data, int width, int height, int channels, MatchResult * Results, int maxCount)
 {
 	cv::Mat img;
 
