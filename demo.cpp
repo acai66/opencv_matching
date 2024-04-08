@@ -53,22 +53,6 @@ void mouse_callback(int event, int x, int y, int, void*)
 
 int main(int argc, char** argv)
 {
-	std::string templateImgPath = "C:\\Users\\acai1\\Desktop\\t2\\需求1-线扫相机图\\t2.png";
-	std::string imagePath = "C:\\Users\\acai1\\Desktop\\t2\\需求1-线扫相机图\\1.bmp";
-
-	if (argc == 3)
-	{
-		templateImgPath = std::string(argv[1]);
-		imagePath = std::string(argv[2]);
-	}
-
-	// 读图
-	cv::Mat templateImg = imread(templateImgPath, cv::IMREAD_GRAYSCALE);
-	cv::Mat image = imread(imagePath, cv::IMREAD_GRAYSCALE);
-	if (templateImg.empty() || image.empty()) {
-		std::cout << "Image: empty." << std::endl;
-	}
-
 	// 匹配器参数
 	template_matching::MatcherParam param;
 	param.angle = 0;
@@ -213,6 +197,8 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
+
+		cap.release();
 
 		delete matcher;
 		
