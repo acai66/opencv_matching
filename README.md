@@ -14,6 +14,16 @@
 
 ## 编译
 
+### clone代码
+
+git克隆时同步克隆子模块
+
+```shell
+git clone --recurse-submodules https://github.com/acai66/opencv_matching.git
+```
+
+### 编译代码
+
 使用各种编译cmake的方法(vs2022、vs2019、vs2017、或cmake-gui)编译即可，演示使用vs2022编译，其余工具供参考。
 
 编译演示视频：[B站链接](https://www.bilibili.com/video/BV1hu4m1F7D1)
