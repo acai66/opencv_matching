@@ -529,6 +529,30 @@ namespace template_matching {
 			vecSort[i] = vecPtAngle[i].first;
 	}
 
+	cv::RotatedRect RotatedRect2(const Point2f& _point1, const Point2f& _point2, const Point2f& _point3)
+	{
+		Point2f _center = 0.5f * (_point1 + _point3);
+		Vec2f vecs[2];
+		vecs[0] = Vec2f(_point1 - _point2);
+		vecs[1] = Vec2f(_point2 - _point3);
+		double x = std::max(norm(_point1), std::max(norm(_point2), norm(_point3)));
+		double a = std::min(norm(vecs[0]), norm(vecs[1]));
+		// check that given sides are perpendicular
+		//CV_Assert(std::fabs(vecs[0].ddot(vecs[1])) * a <= FLT_EPSILON * 9 * x * (norm(vecs[0]) * norm(vecs[1])));
+
+		// wd_i stores which vector (0,1) or (1,2) will make the width
+		// One of them will definitely have slope within -1 to 1
+		int wd_i = 0;
+		if (std::fabs(vecs[1][1]) < std::fabs(vecs[1][0])) wd_i = 1;
+		int ht_i = (wd_i + 1) % 2;
+
+		float _angle = std::atan(vecs[wd_i][1] / vecs[wd_i][0]) * 180.0f / (float)CV_PI;
+		float _width = (float)norm(vecs[wd_i]);
+		float _height = (float)norm(vecs[ht_i]);
+
+		return cv::RotatedRect(_center, Size2f(_width, _height), _angle);
+	}
+
 	void FilterWithRotatedRect(vector<s_MatchParameter>* vec, int iMethod, double dMaxOverLap)
 	{
 		int iMatchSize = (int)vec->size();
@@ -892,7 +916,7 @@ namespace template_matching {
 			ptLB = Point2f(ptLT.x + iDstH * (float)sin(dRAngle), ptLT.y + iDstH * (float)cos(dRAngle));
 			ptRB = Point2f(ptRT.x + iDstH * (float)sin(dRAngle), ptRT.y + iDstH * (float)cos(dRAngle));
 			//紀錄旋轉矩形
-			vecAllResult[i].rectR = RotatedRect(ptLT, ptRT, ptRB);
+			vecAllResult[i].rectR = RotatedRect2(ptLT, ptRT, ptRB);
 		}
 		FilterWithRotatedRect(&vecAllResult, CV_TM_CCOEFF_NORMED, matchParam_.iouThreshold);
 		//最後濾掉重疊
