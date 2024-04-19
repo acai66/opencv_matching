@@ -199,6 +199,7 @@ int main(int argc, char** argv)
 		}
 
 		cap.release();
+		cv::destroyAllWindows();
 
 		delete matcher;
 		
