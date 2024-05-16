@@ -30,7 +30,7 @@
 
 
 // 动态库函数指针
-typedef template_matching::Matcher* (*InitMD)(const template_matching::MatcherParam);
+typedef template_matching::Matcher* (*InitMD)(const template_matching::MatcherParam&);
 
 
 // 匹配结果

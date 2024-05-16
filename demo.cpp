@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 
 // 动态库函数指针
-typedef template_matching::Matcher* (*InitMD)(const template_matching::MatcherParam);
+typedef template_matching::Matcher* (*InitMD)(const template_matching::MatcherParam&);
 
 cv::Rect box;
 bool drawing_box = false;
