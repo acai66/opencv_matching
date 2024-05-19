@@ -94,6 +94,11 @@ Matcher::Matcher(const template_matching::MatcherParam& param)
 	_handle = dlopen("libtemplatematching.so", RTLD_LAZY);
 	if (_handle == nullptr)
 	{
+		char *dlopenError = dlerror();
+		if (dlopenError != nullptr)
+		{
+			std::cerr << "Error : " << dlopenError << std::endl;
+		}
 		std::cerr << "Error : failed to load libtemplatematching.so!" << std::endl;
 		return;
 	}

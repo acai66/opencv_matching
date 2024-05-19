@@ -84,6 +84,11 @@ int main(int argc, char** argv)
 	handle = dlopen("libtemplatematching.so", RTLD_LAZY); 
 	if (handle == nullptr)
 	{
+		char *dlopenError = dlerror();
+		if (dlopenError != nullptr)
+		{
+			std::cerr << "Error : " << dlopenError << std::endl;
+		}
 		std::cerr << "Error : failed to load libtemplatematching.so!" << std::endl;
 		return -2;
 	}
